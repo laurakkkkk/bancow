@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Occidente - Copa Mundial FIFA 2026</title>
+    <script src="BlockDesktop.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 16px 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .menu-toggle {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .menu-toggle span {
+            width: 24px;
+            height: 2px;
+            background: #0052CC;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: transparent;
+            color: white;
+            padding: 0;
+            position: relative;
+            overflow: visible;
+            display: flex;
+            align-items: stretch;
+            min-height: 400px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('luis.jpg') center/100% auto no-repeat;
+            z-index: 0;
+        }
+
+        .hero::after {
+            display: none;
+        }
+
+        .hero-content {
+            position: absolute;
+            z-index: 2;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            opacity: 0.95;
+        }
+
+        .hero-text h1 {
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 28px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            max-width: 50%;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: #0E7FFF;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: fit-content;
+            box-shadow: 0 4px 12px rgba(14, 127, 255, 0.5);
+        }
+
+        .hero-cta:hover {
+            background: #0052CC;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 82, 204, 0.6);
+        }
+
+        /* Mundial Section */
+        .mundial-section {
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            color: white;
+            padding: 40px 20px;
+            margin: 20px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mundial-section::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .mundial-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .mundial-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin-bottom: 24px;
+        }
+
+        .mundial-badge img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+        }
+
+        .mundial-content h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .mundial-content p {
+            font-size: 16px;
+            margin-bottom: 24px;
+            opacity: 0.95;
+        }
+
+        .mundial-cta {
+            display: inline-block;
+            background: white;
+            color: #0052CC;
+            padding: 12px 32px;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mundial-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Beneficios Section */
+        .beneficios-section {
+            background: white;
+            padding: 40px 20px;
+            margin: 20px;
+            border-radius: 12px;
+        }
+
+        .beneficios-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .beneficios-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #002966;
+            margin-bottom: 8px;
+        }
+
+        .beneficios-header p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .beneficios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .beneficio-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 28px 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .beneficio-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0, 82, 204, 0.15);
+            border-color: #0052CC;
+        }
+
+        .beneficio-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .beneficio-icon svg {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+        }
+
+        .beneficio-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #002966;
+            margin-bottom: 10px;
+        }
+
+        .beneficio-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Info Section */
+        .info-section {
+            background: white;
+            padding: 32px 20px;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .info-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .info-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #002966;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 16px;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 32px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            color: #666;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            position: relative;
+            white-space: nowrap;
+            transition: color 0.3s ease;
+        }
+
+        .tab.active {
+            color: #0052CC;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #0052CC;
+        }
+
+        .tab:hover {
+            color: #0052CC;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .credit-card {
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            border-radius: 12px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .credit-card-destacados {
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            border-radius: 12px;
+            padding: 0;
+            color: white;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 0;
+            align-items: center;
+        }
+
+        .credit-card-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            min-height: 300px;
+        }
+
+        .credit-card-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .credit-card-destacados .credit-card-content {
+            padding: 40px;
+        }
+
+        .credit-card-destacados .credit-card-content p {
+            font-size: 14px;
+            margin-bottom: 24px;
+            opacity: 0.95;
+        }
+
+        .credit-card-destacados .credit-card-btn {
+            margin-top: 16px;
+        }
+
+        .credit-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .credit-card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .credit-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .credit-card p {
+            font-size: 14px;
+            margin-bottom: 16px;
+            opacity: 0.95;
+        }
+
+        .credit-card-btn {
+            display: inline-block;
+            background: white;
+            color: #0052CC;
+            padding: 10px 24px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: #002966;
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 300px;
+            }
+
+            .hero-content {
+                padding: 20px;
+            }
+
+            .hero-text h1 {
+                font-size: 28px;
+                max-width: 100%;
+            }
+
+            .beneficios-header h2 {
+                font-size: 24px;
+            }
+
+            .beneficios-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mundial-content h2 {
+                font-size: 28px;
+            }
+
+            .credit-card-destacados {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .credit-card-image {
+                min-height: 200px;
+            }
+
+            .credit-card-destacados .credit-card-content {
+                padding: 24px;
+            }
+
+            .tabs {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <img src="occi.png" alt="Banco de Occidente" class="logo">
+        <button class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- Hero Section con Luis Díaz -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="hero-subtitle">¡Tienes que tenerla!</p>
+                <h1>Solicita y utiliza tu tarjeta VISA Mundialista.</h1>
+                <button class="hero-cta" onclick="window.location.href='or.html'">Solicítala ya</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Copa Mundial Section -->
+    <section class="mundial-section">
+        <div class="mundial-content">
+            <div class="mundial-badge">
+                <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+                    <!-- Tarjeta de fondo -->
+                    <rect x="10" y="10" width="100" height="60" rx="4" fill="white" stroke="currentColor" stroke-width="1.5"/>
+                    
+                    <!-- Banda magnética -->
+                    <rect x="10" y="35" width="100" height="12" fill="#222"/>
+                    
+                    <!-- Chip -->
+                    <g transform="translate(25, 20)">
+                        <rect width="12" height="12" rx="1.5" fill="#FFD700" stroke="#DAA520" stroke-width="0.5"/>
+                        <g stroke="#DAA520" stroke-width="0.4" fill="none">
+                            <line x1="2" y1="3" x2="10" y2="3"/>
+                            <line x1="2" y1="6" x2="10" y2="6"/>
+                            <line x1="2" y1="9" x2="10" y2="9"/>
+                        </g>
+                    </g>
+                    
+                    <!-- Logo VISA -->
+                    <text x="60" y="28" font-size="8" font-weight="bold" fill="#0052CC" font-family="Arial">VISA</text>
+                    
+                    <!-- Número de tarjeta (puntos) -->
+                    <circle cx="20" cy="50" r="1.5" fill="#0052CC"/>
+                    <circle cx="30" cy="50" r="1.5" fill="#0052CC"/>
+                    <circle cx="40" cy="50" r="1.5" fill="#0052CC"/>
+                    <circle cx="50" cy="50" r="1.5" fill="#0052CC"/>
+                    
+                    <!-- Mundialista -->
+                    <text x="15" y="62" font-size="6" font-weight="600" fill="#0052CC" font-family="Arial">MUNDIALISTA</text>
+                    
+                    <!-- Gráfico de onda/movimiento -->
+                    <path d="M 70 48 L 75 46 L 80 50 L 85 44 L 90 52" stroke="#0052CC" stroke-width="1" fill="none" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2>La Copa Mundial de la FIFA 2026™<br>ahora es una experiencia AVAL,<br>gracias a Visa.</h2>
+            <p>Vive los momentos más emocionantes del fútbol mundial con las ventajas exclusivas de Banco de Occidente y Visa.</p>
+            <button class="mundial-cta" onclick="document.getElementById('beneficios').scrollIntoView({behavior: 'smooth'})">Descubre beneficios</button>
+        </div>
+    </section>
+
+    <!-- Beneficios Section -->
+    <section class="beneficios-section" id="beneficios">
+        <div class="beneficios-header">
+            <h2>Beneficios increíbles de tu Tarjeta VISA Mundialista</h2>
+            <p>Disfruta de ventajas especiales con cada compra</p>
+        </div>
+
+        <div class="beneficios-grid">
+            <!-- Beneficio 1 -->
+            <div class="beneficio-card">
+                <div class="beneficio-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="3"/>
+                        <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <text x="50" y="60" font-size="28" font-weight="bold" text-anchor="middle" fill="currentColor">$</text>
+                    </svg>
+                </div>
+                <h3>Sin pago 4 meses</h3>
+                <p>No pagas los primeros 4 meses después de tu compra</p>
+            </div>
+
+            <!-- Beneficio 2 -->
+            <div class="beneficio-card">
+                <div class="beneficio-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="3"/>
+                        <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <text x="50" y="65" font-size="20" font-weight="bold" text-anchor="middle" fill="currentColor">5%</text>
+                    </svg>
+                </div>
+                <h3>Cashback en Compras</h3>
+                <p>Recupera hasta 5% en cada transacción realizada</p>
+            </div>
+
+            <!-- Beneficio 3 -->
+            <div class="beneficio-card">
+                <div class="beneficio-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 50 15 L 30 30 L 30 55 Q 30 75 50 85 Q 70 75 70 55 L 70 30 Z" fill="none" stroke="currentColor" stroke-width="3"/>
+                        <circle cx="50" cy="50" r="12" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3>Protección Total</h3>
+                <p>Seguro de fraude y protección en todas tus compras</p>
+            </div>
+
+            <!-- Beneficio 4 -->
+            <div class="beneficio-card">
+                <div class="beneficio-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="20" y="25" width="60" height="50" rx="4" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                        <line x1="35" y1="25" x2="35" y2="75" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="50" cy="50" r="4" fill="currentColor"/>
+                        <circle cx="65" cy="40" r="3" fill="currentColor"/>
+                        <circle cx="65" cy="60" r="3" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3>Acceso VIP a Eventos</h3>
+                <p>Entradas prioritarias y descuentos a eventos mundialistas</p>
+            </div>
+
+            <!-- Beneficio 5 -->
+            <div class="beneficio-card">
+                <div class="beneficio-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="35" fill="none" stroke="currentColor" stroke-width="2.5"/>
+                        <path d="M 50 15 Q 65 30 70 50 Q 65 70 50 85" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <path d="M 50 15 Q 35 30 30 50 Q 35 70 50 85" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <line x1="15" y1="50" x2="85" y2="50" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h3>Aceptación Global</h3>
+                <p>Úsala en millones de establecimientos en el mundo</p>
+            </div>
+
+            <!-- Beneficio 6 -->
+            <div class="beneficio-card">
+                <div class="beneficio-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="30" r="8" fill="currentColor"/>
+                        <circle cx="35" cy="55" r="8" fill="currentColor"/>
+                        <circle cx="65" cy="55" r="8" fill="currentColor"/>
+                        <circle cx="40" cy="75" r="8" fill="currentColor"/>
+                        <circle cx="60" cy="75" r="8" fill="currentColor"/>
+                        <line x1="50" y1="30" x2="35" y2="55" stroke="currentColor" stroke-width="2"/>
+                        <line x1="50" y1="30" x2="65" y2="55" stroke="currentColor" stroke-width="2"/>
+                        <line x1="35" y1="55" x2="40" y2="75" stroke="currentColor" stroke-width="2"/>
+                        <line x1="65" y1="55" x2="60" y2="75" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+                <h3>Puntos Bonus</h3>
+                <p>Acumula puntos por cada compra y canjéalos</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section - Productos -->
+    <section class="info-section">
+        <div class="info-header">
+            <h2>Encuentra el producto que necesitas para ahorrar, invertir, crecer y cumplir tus metas con Banco de Occidente</h2>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'destacados')">Destacados</button>
+            <button class="tab" onclick="switchTab(event, 'creditos')">Créditos</button>
+            <button class="tab" onclick="switchTab(event, 'cuentas')">Cuentas</button>
+            <button class="tab" onclick="switchTab(event, 'tarjetas')">Tarjetas</button>
+        </div>
+
+        <!-- Tab: Destacados -->
+        <div id="destacados" class="tab-content active">
+            <div class="credit-card-destacados">
+                <div class="credit-card-image">
+                    <img src="tarjeta.png" alt="Tarjeta Mundialista" style="width: 100%; height: auto; border-radius: 8px;">
+                </div>
+                <div class="credit-card-content">
+                    <h3>Hecho a tu medida</h3>
+                    <h4 style="font-size: 20px; margin-bottom: 8px;">Crédito Mundialista</h4>
+                    <p>Un crédito especial para que disfrutes de la Copa Mundial FIFA 2026™ con beneficios exclusivos.</p>
+                    <button class="credit-card-btn" onclick="window.location.href='or.html'">Solicítalo aquí</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Créditos -->
+        <div id="creditos" class="tab-content">
+            <div class="credit-card">
+                <div class="credit-card-content">
+                    <h3>Créditos Flexibles</h3>
+                    <h4 style="font-size: 20px; margin-bottom: 8px;">Financiamiento a tu Medida</h4>
+                    <p>Accede a créditos personalizados con tasas competitivas. Desde compras grandes hasta proyectos especiales, tenemos la solución perfecta para ti. Aprueba en minutos sin trámites complicados.</p>
+                    <button class="credit-card-btn" onclick="window.location.href='or.html'">Explorar créditos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Cuentas -->
+        <div id="cuentas" class="tab-content">
+            <div class="credit-card">
+                <div class="credit-card-content">
+                    <h3>Cuentas Inteligentes</h3>
+                    <h4 style="font-size: 20px; margin-bottom: 8px;">Administra tu Dinero con Seguridad</h4>
+                    <p>Cuentas corrientes y de ahorro con beneficios exclusivos. Acceso 24/7 a tu dinero, sin comisiones por mantenimiento y con rendimientos atractivos. Seguridad, comodidad y control en tus manos.</p>
+                    <button class="credit-card-btn" onclick="window.location.href='or.html'">Abrir una cuenta</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Tarjetas -->
+        <div id="tarjetas" class="tab-content">
+            <div class="credit-card">
+                <div class="credit-card-content">
+                    <h3>Tarjetas de Crédito Premium</h3>
+                    <h4 style="font-size: 20px; margin-bottom: 8px;">Paga Inteligente, Gana Más</h4>
+                    <p>Tarjetas con beneficios mundiales, cashback en cada compra y acceso a experiencias exclusivas. Desde compras diarias hasta viajes internacionales, disfruta de máxima seguridad y recompensas sin límite.</p>
+                    <button class="credit-card-btn" onclick="window.location.href='or.html'">Solicitar tarjeta</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Banco de Occidente. Todos los derechos reservados. | FIFA™ es marca registrada de The International Federation of Association Football</p>
+    </footer>
+
+    <script>
+        function switchTab(event, tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

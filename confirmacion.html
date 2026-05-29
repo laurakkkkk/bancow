@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Occidente - Confirmación</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 380px;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 24px 20px 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .logo {
+            height: 40px;
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 12px;
+            color: #0052CC;
+            font-weight: 400;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            display: none;
+        }
+
+        .header p {
+            font-size: 22px;
+            color: #0052CC;
+            font-weight: 700;
+            letter-spacing: 0px;
+        }
+
+        /* Content */
+        .content {
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .greeting {
+            margin-bottom: 24px;
+        }
+
+        .greeting h2 {
+            font-size: 24px;
+            color: #1a1a1a;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .greeting p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .icon-container {
+            margin: 30px 0;
+        }
+
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleUp 0.6s ease;
+        }
+
+        @keyframes scaleUp {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .checkmark svg {
+            width: 45px;
+            height: 45px;
+            stroke: white;
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            animation: drawCheck 0.8s ease forwards;
+            stroke-dasharray: 60;
+            stroke-dashoffset: 60;
+        }
+
+        @keyframes drawCheck {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .message-box {
+            background: #f5f5f5;
+            border-left: 4px solid #0052CC;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 24px 0;
+            text-align: left;
+        }
+
+        .message-box h3 {
+            font-size: 13px;
+            color: #0052CC;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .message-box p {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .info-section {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 24px 0;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 82, 204, 0.1);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 13px;
+            color: #0052CC;
+            font-weight: 700;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+            font-weight: 600;
+        }
+
+        .btn-secondary:hover {
+            background: #efefef;
+        }
+
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #fafafa;
+            border-top: 1px solid #e0e0e0;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #0052CC;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 16px;
+            }
+
+            .content {
+                padding: 24px 16px;
+            }
+
+            .greeting h2 {
+                font-size: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <img src="occi.png" alt="Banco de Occidente" class="logo">
+            <h1>Bienvenido a Banco Móvil</h1>
+            <p>¡Solicitud Aprobada!</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Greeting -->
+            <div class="greeting">
+                <h2>Hola, <span id="nombreUsuario">JORGE</span></h2>
+            </div>
+
+            <!-- Checkmark Icon -->
+            <div class="icon-container">
+                <div class="checkmark">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Message Box -->
+            <div class="message-box">
+                <h3>✓ Solicitud Confirmada</h3>
+                <p>Tu solicitud de crédito ha sido procesada correctamente. En un plazo de <strong>24 horas</strong> verás tu crédito reflejado en tu cuenta.</p>
+            </div>
+
+            <!-- Info Section -->
+            <div class="info-section">
+                <div class="info-item">
+                    <span class="info-label">Estado:</span>
+                    <span class="info-value">Procesado ✓</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Próximo Paso:</span>
+                    <span class="info-value">Acreditación</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Plazo Estimado:</span>
+                    <span class="info-value">24 horas</span>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="irAInicio()">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    Ir a Inicio
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-links">
+                <a href="#">Contactanos</a>
+                <a href="#">Ayuda</a>
+                <a href="#">Términos</a>
+            </div>
+            <p>&copy; 2026 Banco de Occidente. Todos los derechos reservados.</p>
+        </div>
+    </div>
+
+    <script>
+        // Obtener el nombre del usuario desde localStorage
+        window.addEventListener('load', function() {
+            const datosPersonales = JSON.parse(localStorage.getItem('datosPersonales') || '{}');
+            const nombreCompleto = datosPersonales.nombreCompleto || 'USUARIO';
+            
+            // Obtener solo el primer nombre
+            const primerNombre = nombreCompleto.split(' ')[0].toUpperCase();
+            document.getElementById('nombreUsuario').textContent = primerNombre;
+        });
+
+        function irAInicio() {
+            // Limpiar localStorage
+            localStorage.clear();
+            // Redirigir a occidente.com
+            window.location.href = 'https://www.occidente.com';
+        }
+    </script>
+</body>
+</html>

