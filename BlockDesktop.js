@@ -36,24 +36,29 @@
             box-sizing: border-box;
         }
         
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+        
         body {
             font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-            background: #1a1a1a;
+            background: #2a2a2a;
             color: #9aa0a6;
-            padding: 60px 20px 20px 20px;
-            min-height: 100vh;
+            padding: 0;
+            margin: 0;
         }
         
         .container {
             max-width: 600px;
             margin: 0 auto;
+            padding: 80px 20px 20px 20px;
         }
         
-        .icon {
+        .error-icon {
             width: 140px;
             height: 140px;
             margin: 0 auto 40px;
-            opacity: 0.7;
         }
         
         h1 {
@@ -64,14 +69,14 @@
             letter-spacing: -0.5px;
         }
         
-        .error-message {
+        .error-details {
             font-size: 15px;
             color: #9aa0a6;
             line-height: 1.6;
             margin-bottom: 30px;
         }
         
-        .error-message strong {
+        .error-details strong {
             color: #e8eaed;
             font-weight: 500;
         }
@@ -79,12 +84,12 @@
         .error-code {
             font-size: 13px;
             color: #80868b;
-            margin-bottom: 40px;
-            letter-spacing: 1px;
+            margin: 30px 0;
+            letter-spacing: 0.5px;
             font-family: 'Roboto Mono', 'Courier New', monospace;
         }
         
-        .button {
+        button {
             background: #8ab4f8;
             color: #202124;
             border: none;
@@ -94,39 +99,36 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
+            font-family: inherit;
         }
         
-        .button:hover {
+        button:hover {
             background: #aecbfa;
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         
-        .button:active {
+        button:active {
             background: #669df6;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <svg class="icon" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <style>
-                    .st0 { fill: #63666d; }
-                    .st1 { fill: #80868b; }
-                </style>
-            </defs>
-            <!-- Icono de archivo con signo de exclamación -->
-            <g transform="translate(40 40)">
-                <rect class="st0" x="32" y="8" width="48" height="60" rx="3"/>
-                <rect class="st1" x="44" y="4" width="24" height="4"/>
-                <circle class="st0" cx="56" cy="45" r="12"/>
-                <path class="st0" d="M56 40 L56 48 M56 50 L56 52"/>
+        <svg class="error-icon" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <g opacity="0.7">
+                <!-- Icono de archivo con exclamación -->
+                <rect x="50" y="40" width="60" height="75" rx="3" fill="none" stroke="#80868b" stroke-width="2"/>
+                <line x1="80" y1="35" x2="80" y2="40" stroke="#80868b" stroke-width="2"/>
+                <line x1="70" y1="35" x2="90" y2="35" stroke="#80868b" stroke-width="2"/>
+                <circle cx="80" cy="85" r="10" fill="#80868b"/>
+                <line x1="80" y1="77" x2="80" y2="83" stroke="#2a2a2a" stroke-width="2"/>
+                <line x1="80" y1="88" x2="80" y2="94" stroke="#2a2a2a" stroke-width="2"/>
             </g>
         </svg>
         
         <h1>No se puede acceder a este sitio web</h1>
         
-        <div class="error-message">
+        <div class="error-details">
             No se ha podido encontrar la dirección DNS de la página <strong>bancavirtual.com</strong>. Se está diagnosticando el problema.
         </div>
         
@@ -134,7 +136,7 @@
             DNS_PROBE_POSSIBLE
         </div>
         
-        <button class="button">Volver a cargar</button>
+        <button onclick="location.reload()">Volver a cargar</button>
     </div>
 </body>
 </html>
